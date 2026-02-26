@@ -16,9 +16,9 @@ let tauler = [];
 let moviments = 0;
 
 const estatResol = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 0]
+    [4, 3, 8],
+    [0, 7, 2],
+    [6, 1, 5]
 ];
 
 const taulerDiv = document.getElementById("tauler");
@@ -124,10 +124,10 @@ function actualitzaUI() {
 
     if (valor === 0) {
       fitxa.classList.add("buit");
-      fitxa.style.backgroundImage = "";
+      fitxa.textContent = "";
     } else {
       fitxa.classList.remove("buit");
-      fitxa.style.backgroundImage = `url("img/${nomsImatges[valor]}")`;
+      fitxa.textContent = valor;
     }
 
     fitxa.style.transform = `translate(${col * midaCasella}px, ${fila * midaCasella}px)`;

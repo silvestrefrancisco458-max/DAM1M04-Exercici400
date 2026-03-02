@@ -1,146 +1,167 @@
-const nomsImatges = {
-  1: "uno.png",
-  2: "dos.png",
-  3: "tres.png",
-  4: "cuatro.png",
-  5: "cinco.png",
-  6: "seis.png",
-  7: "siete.png",
-  8: "ocho.png"
-};
+"use strict"
+
+const midaCasella = 120
 const numFiles = 3
 const numColumnes = 3
-const midaCasella = 150;
 
-let tauler = [];
-let moviments = 0;
+// 0 = buit, 1..8 = peces
+let tauler = []
+const estatResolut = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 0]
+]
 
-const estatResol = [
-    [4, 3, 8],
-    [0, 7, 2],
-    [6, 1, 5]
-];
-
-const taulerDiv = document.getElementById("tauler");
-const movimentsSpan = document.getElementById("moviments");
-const missatgeDiv = document.getElementById("missatge");
-const resetBtn = document.getElementById("reset");
-
-resetBtn.addEventListener("click", resetJoc);
+let moviments = 0
 
 function init() {
-    taulerDiv.innerHTML = "";
+  // variables CSS
+  const root = document.documentElement
+  root.style.setProperty("--mida", midaCasella + "px")
+  root.style.setProperty("--files", numFiles)
+  root.style.setProperty("--columnes", numColumnes)
 
-    for (let fila = 0; fila < numFiles; fila++) {
-        for (let col = 0; col < numColumnes; col++) {
-            const casella = document.createElement("div");
-            casella.classList.add("casella");
-            casella.style.left = (col * midaCasella) + "px";
-            casella.style.top = (fila * midaCasella) + "px";
+  const refTauler = document.getElementById("tauler")
 
-            const fitxa = document.createElement("div");
-            fitxa.classList.add("fitxa");
-            fitxa.dataset.fila = fila;
-            fitxa.dataset.col = col;
-            fitxa.addEventListener("click", () => clicCasella(fila, col));
-
-            casella.appendChild(fitxa);
-            taulerDiv.appendChild(casella);
-         }
+  // crear caselles base (grid visual)
+  for (let fila = 0; fila < numFiles; fila++) {
+    for (let columna = 0; columna < numColumnes; columna++) {
+      const refCasella = document.createElement("div")
+      refCasella.classList.add("casella")
+      refCasella.style.left = `${columna * midaCasella}px`
+      refCasella.style.top = `${fila * midaCasella}px`
+      refTauler.appendChild(refCasella)
     }
+  }
 
-    resetJoc();
+  // crear fitxes (1..8) com a divs independents
+  for (let valor = 1; valor <= 8; valor++) {
+    const refFitxa = document.createElement("div")
+    refFitxa.classList.add("fitxa")
+    refFitxa.dataset.valor = valor
+    refFitxa.textContent = valor   // ← AQUÍ aparece el número
+    refFitxa.addEventListener("click", () => clicFitxa(valor))
+    refTauler.appendChild(refFitxa)
+  }
+
+  // botó reset
+  document.getElementById("btnReset").addEventListener("click", resetJoc)
+
+  resetJoc()
 }
 
 function resetJoc() {
-  moviments = 0;
-  movimentsSpan.textContent = moviments;
-  missatgeDiv.textContent = "";
+  // crear array amb valors 0..8 i barrejar
+  const valors = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  barrejaArray(valors)
 
-  const valors = [0,1,2,3,4,5,6,7,8];
-  barrejaArray(valors);
-
-  tauler = [];
-  let index = 0;
-
+  // omplir matriu 3x3
+  tauler = []
+  let index = 0
   for (let fila = 0; fila < numFiles; fila++) {
-    const filaArr = [];
-    for (let col = 0; col < numColumnes; col++) {
-      filaArr.push(valors[index]);
-      index++;
+    const filaArr = []
+    for (let columna = 0; columna < numColumnes; columna++) {
+      filaArr.push(valors[index])
+      index++
     }
-    tauler.push(filaArr);
+    tauler.push(filaArr)
   }
 
-  actualitzaUI();
+  moviments = 0
+  actualitzaMoviments()
+  document.getElementById("missatge").textContent = ""
+  actualitzaUI()
 }
 
+// Fisher-Yates
 function barrejaArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-}
-
-function clicCasella(fila, col) {
-  const { filaBuit, colBuit } = buscaBuit();
-
-  const df = Math.abs(fila - filaBuit);
-  const dc = Math.abs(col - colBuit);
-
-  if (df + dc === 1) {
-    [tauler[fila][col], tauler[filaBuit][colBuit]] =
-      [tauler[filaBuit][colBuit], tauler[fila][col]];
-
-    moviments++;
-    movimentsSpan.textContent = moviments;
-
-    actualitzaUI();
-
-    if (estaResol()) {
-      missatgeDiv.textContent = `Puzle resolt en ${moviments} moviments!`;
-    }
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
   }
 }
 
 function buscaBuit() {
   for (let fila = 0; fila < numFiles; fila++) {
-    for (let col = 0; col < numColumnes; col++) {
-      if (tauler[fila][col] === 0) {
-        return { filaBuit: fila, colBuit: col };
+    for (let columna = 0; columna < numColumnes; columna++) {
+      if (tauler[fila][columna] === 0) {
+        return { fila, columna }
       }
     }
+  }
+  return null
+}
+
+function clicFitxa(valorFitxa) {
+  // buscar posició de la fitxa clicada i del buit
+  let posFitxa = null
+  let posBuit = null
+
+  for (let fila = 0; fila < numFiles; fila++) {
+    for (let columna = 0; columna < numColumnes; columna++) {
+      if (tauler[fila][columna] === valorFitxa) {
+        posFitxa = { fila, columna }
+      } else if (tauler[fila][columna] === 0) {
+        posBuit = { fila, columna }
+      }
+    }
+  }
+
+  if (!posFitxa || !posBuit) return
+
+  const df = posFitxa.fila - posBuit.fila
+  const dc = posFitxa.columna - posBuit.columna
+  const distancia = Math.abs(df) + Math.abs(dc)
+
+  // només si és adjacent
+  if (distancia === 1) {
+    // intercanvi a la matriu
+    tauler[posBuit.fila][posBuit.columna] = valorFitxa
+    tauler[posFitxa.fila][posFitxa.columna] = 0
+
+    moviments++
+    actualitzaMoviments()
+    actualitzaUI()
+    comprovaResolut()
   }
 }
 
 function actualitzaUI() {
-  const fitxes = document.querySelectorAll(".fitxa");
+  // moure cada fitxa segons la seva posició a la matriu
+  const fitxes = document.querySelectorAll(".fitxa")
+  fitxes.forEach((fitxa) => {
+    const valor = parseInt(fitxa.dataset.valor)
+    let filaPos = 0
+    let colPos = 0
 
-  fitxes.forEach(fitxa => {
-    const fila = parseInt(fitxa.dataset.fila);
-    const col = parseInt(fitxa.dataset.col);
-
-    const valor = tauler[fila][col];
-
-    if (valor === 0) {
-      fitxa.classList.add("buit");
-      fitxa.textContent = "";
-    } else {
-      fitxa.classList.remove("buit");
-      fitxa.textContent = valor;
+    for (let fila = 0; fila < numFiles; fila++) {
+      for (let columna = 0; columna < numColumnes; columna++) {
+        if (tauler[fila][columna] === valor) {
+          filaPos = fila
+          colPos = columna
+        }
+      }
     }
 
-    fitxa.style.transform = `translate(${col * midaCasella}px, ${fila * midaCasella}px)`;
-  });
+    const x = colPos * midaCasella
+    const y = filaPos * midaCasella
+    fitxa.style.transform = `translate(${x}px, ${y}px)`
+  })
 }
 
-function estaResol() {
+function actualitzaMoviments() {
+  document.getElementById("infoMoviments").textContent =
+    "Moviments: " + moviments
+}
+
+function comprovaResolut() {
   for (let fila = 0; fila < numFiles; fila++) {
-    for (let col = 0; col < numColumnes; col++) {
-      if (tauler[fila][col] !== estatResol[fila][col]) return false;
+    for (let columna = 0; columna < numColumnes; columna++) {
+      if (tauler[fila][columna] !== estatResolut[fila][columna]) {
+        return
+      }
     }
   }
-  return true;
+  document.getElementById("missatge").textContent =
+    "Puzle resolt en " + moviments + " moviments!"
 }
-
-init();

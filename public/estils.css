@@ -1,62 +1,90 @@
 :root {
-    --mida-casella: 150px;
+  --mida: 120px;
+  --files: 3;
+  --columnes: 3;
 }
 
-.buit {
-    background: #ddd;
-    border: none;
-    cursor: default;
+* {
+  box-sizing: border-box;
 }
 
-#info {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+body {
+  align-items: center;
+  background: #f6f7fb;
+  color: #111827;
+  display: flex;
+  flex-direction: column;
+  font-family: "Open Sans", sans-serif;
+  height: 100vh;
+  justify-content: center;
+  padding: 10px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
 }
 
 #tauler {
-    position: relative;
-    width: calc(var(--mida-casella) * 3);
-    height: calc(var(--mida-casella) * 3);
-    border: 2px solid #333;
-    box-sizing: border-box;
+  background: white;
+  border: 1px solid #111827;
+  border-radius: 8px;
+  height: calc(var(--mida) * var(--files));
+  width: calc(var(--mida) * var(--columnes));
+  position: relative;
+  overflow: hidden;
 }
 
 .casella {
-    position: absolute;
-    width: var(--mida-casella);
-    height: var(--mida-casella);
+  position: absolute;
+  width: var(--mida);
+  height: var(--mida);
+  border: 1px solid #ddd;
 }
 
 .fitxa {
-    width: 100%;
-    height: 100%;
-    background: white;
-    border: 2px solid #444;
-    font-size: 48px;
-    font-weight: bold;
-    color: #1a4cff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.25s ease;
+  position: absolute;
+  width: var(--mida);
+  height: var(--mida);
+  background: #cce4ff; /* color visible si no hay imagen */
+  border: 1px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: bold;
+  transition: transform 300ms ease;
+  cursor: pointer;
+}
+
+.fitxa:hover {
+  filter: brightness(1.05);
 }
 
 .buit {
-    background: none;
-    border: none;
-    cursor: default;
+    font: optional;
+  /* no es veu res, només l'espai */
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+button {
+  background: #111827;
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 10px 14px;
 }
 
 #missatge {
-    min-height: 24px;
-    color: green;
-    font-weight: bold;
-}
-
-#original img {
-    width: 300px;
-    margin-bottom: 20px;
-    border: 2px solid #333;
+  margin-left: 10px;
+  font-weight: 600;
+  color: #0b7a28;
 }

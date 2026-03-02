@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <title>Exercici400 - Sliding Puzzle</title>
-    <link rel="stylesheet" href="estils.css">
-</head>
-<body>
-    <h1>Sliding Puzzle 3x3</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <link rel="stylesheet" href="estils.css" />
+    <script src="script.js" defer></script>
+    <title>Sliding Puzzle</title>
+  </head>
 
-    <div id="info">
-        <span>Moviments: <span id="Moviments">0</span></span>
-        <button id="reset">Reset</button>
-    </div>
-
-    <div id="missatge"></div>
-
-    <div id="original">
-        <img src="img/uno.png" alt="Imagen original">
-    </div>
+  <body onload="init()">
+    <h1>Sliding Puzzle</h1>
 
     <div id="tauler"></div>
 
-    <script src="script.js"></script>
-</body>
+    <div class="controls">
+      <button id="btnReset">Reset</button>
+      <span id="infoMoviments">Moviments: 0</span>
+      <span id="missatge"></span>
+    </div>
+  </body>
 </html>

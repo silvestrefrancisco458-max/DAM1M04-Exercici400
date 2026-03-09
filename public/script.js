@@ -1,4 +1,15 @@
 "use strict"
+const imagenes = [
+  "",              // posición 0 no se usa
+  "uno.png",       // valor 1
+  "dos.png",       // valor 2
+  "tres.png",      // valor 3
+  "cuatro.png",    // valor 4
+  "cinco.png",     // valor 5
+  "seis.png",      // valor 6
+  "siete.png",     // valor 7
+  "ocho.png"       // valor 8 (si tienes una)
+];
 
 const midaCasella = 120
 const numFiles = 3
@@ -36,12 +47,17 @@ function init() {
 
   // crear fitxes (1..8) com a divs independents
   for (let valor = 1; valor <= 8; valor++) {
-    const refFitxa = document.createElement("div")
-    refFitxa.classList.add("fitxa")
-    refFitxa.dataset.valor = valor
-    refFitxa.textContent = valor   // ← AQUÍ aparece el número
-    refFitxa.addEventListener("click", () => clicFitxa(valor))
-    refTauler.appendChild(refFitxa)
+    const refFitxa = document.createElement("div");
+    refFitxa.classList.add("fitxa");
+    refFitxa.dataset.valor = valor;
+
+    const img = document.createElement("img");
+    img.src = `img/${imagenes[valor]}`;
+    img.classList.add("imgFitxa");
+    refFitxa.appendChild(img);
+
+    refFitxa.addEventListener("click", () => clicFitxa(valor));
+    refTauler.appendChild(refFitxa);
   }
 
   // botó reset

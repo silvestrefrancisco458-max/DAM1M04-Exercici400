@@ -1,27 +1,11 @@
-"use strict"
-const imagenes = [
-  "",              // posición 0 no se usa
-  "uno.png",       // valor 1
-  "dos.png",       // valor 2
-  "tres.png",      // valor 3
-  "cuatro.png",    // valor 4
-  "cinco.png",     // valor 5
-  "seis.png",      // valor 6
-  "siete.png",     // valor 7
-  "ocho.png"       // valor 8 (si tienes una)
-];
-
+"use strict" // Activa el modo estricto de JavaScript
 const midaCasella = 120
 const numFiles = 3
 const numColumnes = 3
 
 // 0 = buit, 1..8 = peces
 let tauler = []
-const estatResolut = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 0]
-]
+
 
 let moviments = 0
 
@@ -57,7 +41,7 @@ function init() {
     const col = (valor - 1) % 3;
 
     // aplicar la imagen completa y recortar
-    refFitxa.style.backgroundImage = "url('img/goten.jpg')";
+    refFitxa.style.backgroundImage = "url('img/goku.jpg')";
     refFitxa.style.backgroundSize = `${midaCasella * 3}px ${midaCasella * 3}px`;
     refFitxa.style.backgroundPosition = `-${col * midaCasella}px -${fila * midaCasella}px`;
 

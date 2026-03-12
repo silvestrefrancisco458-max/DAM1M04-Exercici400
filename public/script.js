@@ -46,19 +46,25 @@ function init() {
   }
 
   // crear fitxes (1..8) com a divs independents
+  // crear fitxes (1..8) com a divs independents
   for (let valor = 1; valor <= 8; valor++) {
     const refFitxa = document.createElement("div");
     refFitxa.classList.add("fitxa");
     refFitxa.dataset.valor = valor;
 
-    const img = document.createElement("img");
-    img.src = `img/${imagenes[valor]}`;
-    img.classList.add("imgFitxa");
-    refFitxa.appendChild(img);
+    // calcular fila y columna dentro de la imagen original
+    const fila = Math.floor((valor - 1) / 3);
+    const col = (valor - 1) % 3;
+
+    // aplicar la imagen completa y recortar
+    refFitxa.style.backgroundImage = "url('img/goten.jpg')";
+    refFitxa.style.backgroundSize = `${midaCasella * 3}px ${midaCasella * 3}px`;
+    refFitxa.style.backgroundPosition = `-${col * midaCasella}px -${fila * midaCasella}px`;
 
     refFitxa.addEventListener("click", () => clicFitxa(valor));
     refTauler.appendChild(refFitxa);
   }
+
 
   // botó reset
   document.getElementById("btnReset").addEventListener("click", resetJoc)

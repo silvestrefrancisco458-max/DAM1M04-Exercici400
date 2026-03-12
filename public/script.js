@@ -6,6 +6,11 @@ const numColumnes = 3
 // 0 = buit, 1..8 = peces
 let tauler = []
 
+const estatResolut = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 0]
+];
 
 let moviments = 0
 
@@ -41,7 +46,7 @@ function init() {
     const col = (valor - 1) % 3;
 
     // aplicar la imagen completa y recortar
-    refFitxa.style.backgroundImage = "url('img/goku.jpg')";
+    refFitxa.style.backgroundImage = "url('img/gokup.jpg')";
     refFitxa.style.backgroundSize = `${midaCasella * 3}px ${midaCasella * 3}px`;
     refFitxa.style.backgroundPosition = `-${col * midaCasella}px -${fila * midaCasella}px`;
 
@@ -164,10 +169,14 @@ function comprovaResolut() {
   for (let fila = 0; fila < numFiles; fila++) {
     for (let columna = 0; columna < numColumnes; columna++) {
       if (tauler[fila][columna] !== estatResolut[fila][columna]) {
-        return
+        return;
       }
     }
   }
-  document.getElementById("missatge").textContent =
-    "Puzle resolt en " + moviments + " moviments!"
+
+  // Si arriba no ha salido, el puzle está resuelto
+  const missatge = document.getElementById("missatge");
+  missatge.textContent = "Felicitats! Has completat el puzle en " + moviments + " moviments!";
+  missatge.style.color = "var(--color-success)";
+  missatge.style.fontSize = "18px";
 }

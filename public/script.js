@@ -154,7 +154,9 @@ function clicFitxa(valorFitxa) {
   }
 }
 
+// """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 // Selecciona todas las fichas y mira qué número tiene cada una.
+// hace mover los bloque.
 function actualitzaUI() {
   const fitxes = document.querySelectorAll(".fitxa")
   fitxes.forEach((fitxa) => {
@@ -176,9 +178,11 @@ function actualitzaUI() {
     // Calcula su posición en píxeles y mueve la ficha visualmente.
     const x = colPos * midaCasella
     const y = filaPos * midaCasella
+    // Eso cambia la posición de cada ficha en pantalla.
     fitxa.style.transform = `translate(${x}px, ${y}px)`
   })
 }
+// """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 // Cambia el texto para mostrar cuántos movimientos llevas.
 function actualitzaMoviments() {

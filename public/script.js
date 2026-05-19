@@ -147,7 +147,7 @@ function clicFitxa(valorFitxa) {
     tauler[posFitxa.fila][posFitxa.columna] = 0
 
     // Suma un movimiento, actualiza la pantalla y comprueba si ya ganaste.
-    moviments++
+    moviments++ 
     actualitzaMoviments()
     actualitzaUI()
     comprovaResolut()
